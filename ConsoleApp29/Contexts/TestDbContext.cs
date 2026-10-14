@@ -63,7 +63,39 @@ public class TestDbContext : DbContext
 
 
         // course
+        modelBuilder.Entity<Course>()
+            .HasMany(c => c.Students)
+            .WithMany(s => s.Courses);
 
+        modelBuilder.Entity<Course>()
+            .HasMany(c => c.Enrollments)
+            .WithOne(e => e.Course)
+            .HasForeignKey(e => e.CourseId);
+
+        modelBuilder.Entity<Course>()
+            .Property(c => c.Name)
+            .IsRequired()
+            .HasMaxLength(60);
+
+        modelBuilder.Entity<Course>()
+            .Property(c => c.Credit)
+            .IsRequired();
+
+        modelBuilder.Entity<Course>()
+            .HasOne(c => c.Teacher)
+            .WithMany(t => t.Courses)
+            .HasForeignKey(c => c.TeacherId);
+
+        modelBuilder.Entity<Course>()
+            .HasOne(c => c.Department)
+            .WithMany(d => d.Courses)
+            .HasForeignKey(c => c.DepartmentId);
+
+        modelBuilder.Entity<Course>()
+            .HasKey(c => c.Id);
+
+        modelBuilder.Entity<Course>()
+            .HasAlternateKey(c => c.Name);
 
         //teacher
         modelBuilder.Entity<Teacher>()
@@ -87,5 +119,16 @@ public class TestDbContext : DbContext
 
 
         //department
+        modelBuilder.Entity<Department>()
+            .HasMany(d => d.Courses)
+            .WithOne(c => c.Department)
+            .HasForeignKey(c => c.DepartmentId);
+
+        modelBuilder.Entity<Department>()
+            .HasMany(d => d.Teachers)
+            .WithOne(t => t.Department)
+            .HasForeignKey(t => t.DepartmentId);
+
+
     }
 }
