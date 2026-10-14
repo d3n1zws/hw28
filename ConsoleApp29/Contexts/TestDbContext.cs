@@ -32,16 +32,58 @@ public class TestDbContext : DbContext
             .HasOne(e => e.Course)
             .WithMany(c => c.Enrollments)
             .HasForeignKey(e => e.CourseId);
-            
+
 
         // student
+        modelBuilder.Entity<Student>()
+            .HasMany(s => s.Courses)
+            .WithMany(c => c.Students);
 
+        modelBuilder.Entity<Student>()
+            .HasMany(s => s.Enrollments)
+            .WithOne(e => e.Student)
+            .HasForeignKey(e => e.StudentId);
+
+        modelBuilder.Entity<Student>()
+            .Property(s => s.BirthDate)
+            .HasColumnType("date");
+
+        modelBuilder.Entity<Student>()
+            .Property(s => s.Email)
+            .IsRequired()
+            .HasMaxLength(60);
+
+        modelBuilder.Entity<Student>()
+            .Property(s => s.FullName)
+            .IsRequired()
+            .HasMaxLength(60);
+
+        modelBuilder.Entity<Student>()
+            .HasAlternateKey(s => s.Email);
 
 
         // course
 
 
         //teacher
+        modelBuilder.Entity<Teacher>()
+            .HasMany(t => t.Courses)
+            .WithOne(c => c.Teacher)
+            .HasForeignKey(c => c.TeacherId);
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.Email)
+            .IsRequired()
+            .HasMaxLength(60);
+
+        modelBuilder.Entity<Teacher>()
+            .HasAlternateKey(t => t.Email);
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.FullName)
+            .IsRequired()
+            .HasMaxLength(60);
+
 
 
         //department
