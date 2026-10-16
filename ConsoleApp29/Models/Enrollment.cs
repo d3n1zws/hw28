@@ -4,8 +4,6 @@ namespace ConsoleApp29.Models;
 
 public class Enrollment
 {
-    [NotMapped]
-    public int Id { get; set; }
     public int StudentId { get; set; }
     public int CourseId { get; set; }
     public DateTime EnrollmentDate { get; set; }
