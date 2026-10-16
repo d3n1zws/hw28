@@ -15,7 +15,7 @@ public class TeacherConfiguration : IEntityTypeConfiguration<Teacher>
             .HasMany(t => t.Courses)
             .WithOne(c => c.Teacher)
             .HasForeignKey(c => c.TeacherId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(t => t.Department)
